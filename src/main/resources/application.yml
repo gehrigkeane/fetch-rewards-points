@@ -1,8 +1,3 @@
-# Deserialization Configuration
-spring:
-  jackson:
-    date-format: "yyyy-MM-dd'T'HH:mm:ss.SSSz"
-
 # Server Configuration
 server:
   error:
