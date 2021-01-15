@@ -1,6 +1,6 @@
 # Fetch Rewards - Points REST API
 
-This application, titled `fetch-rewards-points`, is build with 
+This application, titled `fetch-rewards-points`, is built with 
 [Spring Boot](https://spring.io/projects/spring-boot) and includes a modest 
 suite of unit and feature tests. Data objects and their validation criteria are 
 well covered by unit tests. Though controller, service, and domain 
@@ -11,24 +11,32 @@ API documentation is self-hosted, allows live API interaction, and is available 
 
 There you'll find documentation for three REST requests beneath the `User` resource:
 
-- `GET /user/{name}/points`: Retrieves a Users point balance by payer, always in order from the first encountered payer to most recent. 
-- `POST /user/{name}/points`: Add points to a Users balance, accepts an JSON object with requires fields `"payer"`, `"point"`, and `"date"`. 
-	Note: `"date"` is optional and defaults to current time, though if supplied it must be of the form `yyyy-MM-dd'T'HH:mm:ss.SSSz` (ISO-8601)
-	e.g. `"date": "2021-01-01T08:00:00.000Z"`.
-- `DELETE /user/{name}/points`: Deduct points from a Users balance, returning the deductions by payer.
+- `GET /user/{name}/points`
+	- Retrieves a `User`s point balance by payer
+	- Results are always in order from the first encountered payer to last 
+- `POST /user/{name}/points`
+	- Add points to a `User`s balance 
+	- Accepts an JSON object with fields `"payer"`, `"points"`, and `"date"` 
+	- `"date"` is optional and defaults to current server time 
+	- If supplied, `"date"` must be of the form `yyyy-MM-dd'T'HH:mm:ss.SSSz`.
+	- e.g. `"date": "2021-01-01T08:00:00.000Z"`
+	- Some effort is made to parse other formats such as `yyyy-MM-dd'T'HH:mm:ss` and `yyyy-MM-dd` assuming timezone `UTC`
+- `DELETE /user/{name}/points`
+	- Deduct points from a `User`s balance
+	- Results are ordered by payer from the first deduction to the last
 
 ## Bootstrapping
 
-The following is pertinent only for development or native application execution (i.e. sans Docker)
+The following is pertinent only for development or native application execution i.e. sans Docker
 
 ```shell
 # Ensure maven is installed
 brew install maven
 
-# Ensure Java 15 is installed, the following is preferential:
+# Ensure Java 15 is installed, the following is preferential and leverages the `.tool-version` file:
 brew install asdf
 asdf plugin add java
-asdf install
+asdf install 
 ```
 
 ## Build and Run
@@ -56,16 +64,17 @@ To construct build artifacts:
 
 ```shell
 # Build the Application Jar with Maven-In-Docker
+# This deposits build artifacts in ./target
 docker run -it --rm \
 	--name fetch-rewards-points_build \
 	--volume "$(pwd)":/usr/src/ \
 	--workdir /usr/src/ \
 	maven:3.6-adoptopenjdk-15 mvn clean install
 	
-# Build Dockerfile with resulting Jar
+# Build Dockerfile with resultant JAR
 docker build . --tag fetch-rewards-points:latest
 
-# Run Build Image
+# Run Built Image
 docker run -it --rm \
 	--name fetch-rewards-points \
 	--publish "8080:8080" \
