@@ -11,12 +11,6 @@ API documentation is self-hosted, allows live API interaction, and is available 
 
 There you'll find documentation for three REST requests beneath the `User` resource:
 
-[DANNON, 300 points, 10/31 10AM] to useradd 
-[UNILEVER, 200 points, 10/31 11AM] to useradd 
-[DANNON, -200 points, 10/31 3PM] to useradd 
-[MILLER COORS, 10,000 points , 11/1 2PM] to useradd 
-[DANNON, 1000 points 11/2 2PM] t
-
 - `GET /user/{name}/points`
 	- Retrieves a `User`s point balance by payer
 	- Results are always in order from the first encountered payer to last 
